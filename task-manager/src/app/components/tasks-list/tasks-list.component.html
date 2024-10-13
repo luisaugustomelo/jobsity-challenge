@@ -1,0 +1,75 @@
+<div *ngIf="tasks.length > 0" class="container mx-auto py-4">
+  <div *ngFor="let task of tasks; let i = index" class="bg-gray-100 p-4 mb-4 rounded-lg w-[464px]">
+    <ul>
+      <li
+        [class.line-through]="task.completed"
+        class="flex items-center justify-between text-gray-800"
+      >
+        <div *ngIf="task.isEditing; else showTask">
+          <input
+            #taskInput
+            [(ngModel)]="task.name"
+            (blur)="saveTaskName(task)"
+            (keyup.enter)="saveTaskName(task)"
+            class="rounded p-1 border-none w-[320px]"
+            type="text"
+          />
+        </div>
+
+        <ng-template #showTask>
+          {{ task.name }}
+        </ng-template>
+
+        <div class="flex items-center justify-end">
+          <span (click)="removeTask(task)" style="cursor: pointer">
+            <svg
+              class="h-8 w-8 text-red-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </span>
+
+          <span (click)="toggleCompleted(task)" style="cursor: pointer">
+            <svg
+              class="h-8 w-8 text-green-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </span>
+
+          <span *ngIf="!task.isEditing" (click)="editTask(i)" style="cursor: pointer">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-8 w-8 text-blue-500"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="9" /> 
+              <path d="M15.75 9l-5.7 5.7c-.1.1-.23.23-.37.3l-2.5.8.8-2.5c.06-.14.18-.27.3-.37l5.7-5.7c.28-.28.73-.28 1 0l.77.77c.29.29.29.73 0 1z" /> <!-- Lápis dentro -->
+            </svg>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
