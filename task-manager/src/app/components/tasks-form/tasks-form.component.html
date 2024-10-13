@@ -1,5 +1,5 @@
 <div class="container mx-auto py-10">
-  <form class="w-full max-w-sm">
+  <form class="w-full max-w-md">
     <div class="flex items-center border-b-2 border-teal-500 py-2 w-[464px]">
       <input
         [(ngModel)]="newTask"
@@ -8,16 +8,22 @@
         type="text"
         placeholder="Add task"
       />
+      <select [(ngModel)]="newTaskStatus" name="newTaskStatus" class="border border-gray-300 rounded px-2 py-1 text-gray-700 ml-2 h-32">
+        <option value="to do">To Do</option>
+        <option value="doing">Doing</option>
+        <option value="completed">Completed</option>
+      </select>
       <button
         type="button"
         (click)="addTask()"
-        class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded"
+        class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded ml-2"
       >
         Add
       </button>
     </div>
   </form>
 </div>
+
 
 <div>
   <app-tasks-list [tasks]="tasks"></app-tasks-list>

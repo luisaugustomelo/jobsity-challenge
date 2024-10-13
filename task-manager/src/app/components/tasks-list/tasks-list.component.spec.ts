@@ -34,14 +34,15 @@ describe('TasksListComponent', () => {
 
   it('should render tasks', () => {
     const taskElements = fixture.debugElement.queryAll(By.css('li'));
-    expect(taskElements.length).toBe(2); 
+    expect(taskElements.length).toBe(3); 
     expect(taskElements[0].nativeElement.textContent).toContain('Task 1');
     expect(taskElements[1].nativeElement.textContent).toContain('Task 2');
-    expect(taskElements[1].nativeElement.textContent).toContain('Task 3');
+    expect(taskElements[2].nativeElement.textContent).toContain('Task 3');
   });
 
   it('should enter edit mode when edit icon is clicked', () => {
-    const editButton = fixture.debugElement.queryAll(By.css('span'))[2]; 
+    const editButtons = fixture.debugElement.queryAll(By.css('span')); 
+    const editButton = editButtons[editButtons.length - 1]; 
     editButton.triggerEventHandler('click', null);
     fixture.detectChanges();
 
@@ -51,7 +52,8 @@ describe('TasksListComponent', () => {
   });
 
   it('should save edited task name on blur', () => {
-    const editButton = fixture.debugElement.queryAll(By.css('span'))[2]; 
+    const editButtons = fixture.debugElement.queryAll(By.css('span')); 
+    const editButton = editButtons[editButtons.length - 1]; 
     editButton.triggerEventHandler('click', null);
     fixture.detectChanges();
 
@@ -80,7 +82,7 @@ describe('TasksListComponent', () => {
     fixture.detectChanges();
 
     const taskElements = fixture.debugElement.queryAll(By.css('li'));
-    expect(taskElements.length).toBe(1);
+    expect(taskElements.length).toBe(2); 
     expect(taskElements[0].nativeElement.textContent).toContain('Task 2'); 
   });
 });

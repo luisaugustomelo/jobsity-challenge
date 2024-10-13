@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Task } from '../../constants/tasks.interface';
 
 @Component({
@@ -6,9 +6,7 @@ import { Task } from '../../constants/tasks.interface';
   templateUrl: './tasks-list.component.html',
 })
 export class TasksListComponent implements OnInit {
-  @Input() tasks: Task[];
-
-  @ViewChild('taskInput', { static: false }) taskInput: ElementRef;
+  @Input() tasks: Task[] = [];
 
   constructor() {}
 
@@ -23,24 +21,20 @@ export class TasksListComponent implements OnInit {
 
   toggleCompleted(task: Task) {
     task.completed = !task.completed;
+    task.status = task.completed ? 'completed' : 'to do';
   }
 
   editTask(index: number) {
     const task = this.tasks[index];
-
-    if (task.isEditing) {
-      this.saveTaskName(task); 
-    } else {
-      task.isEditing = true; 
-      setTimeout(() => {
-        if (this.taskInput) {
-          this.taskInput.nativeElement.focus(); 
-        }
-      }, 0);
-    }
+    task.isEditing = true;
   }
 
-  saveTaskName(task: Task) {
-    task.isEditing = false; 
+  saveTask(task: Task) {
+    task.isEditing = false;
+    if (task.status === 'completed') {
+      task.completed = true;
+    } else {
+      task.completed = false;
+    }
   }
 }

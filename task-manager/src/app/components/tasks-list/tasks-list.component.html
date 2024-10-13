@@ -2,26 +2,38 @@
   <div *ngFor="let task of tasks; let i = index" class="bg-gray-100 p-4 mb-4 rounded-lg w-[464px]">
     <ul>
       <li
-        [class.line-through]="task.completed"
+        [class.line-through]="task.status === 'completed'"
         class="flex items-center justify-between text-gray-800"
       >
-        <div *ngIf="task.isEditing; else showTask">
-          <input
-            #taskInput
-            [(ngModel)]="task.name"
-            (blur)="saveTaskName(task)"
-            (keyup.enter)="saveTaskName(task)"
-            class="rounded p-1 border-none w-[320px]"
-            type="text"
-          />
+        <div *ngIf="task.isEditing; else showTask" class="flex w-full items-center justify-between">
+          <div class="flex items-center">
+            <input
+              [(ngModel)]="task.name"
+              class="rounded p-1 border-none w-[200px] mr-2"
+              type="text"
+            />
+            <select [(ngModel)]="task.status" class="border border-gray-300 rounded-lg px-3 py-1 text-gray-700 shadow-sm focus:ring focus:border-blue-300 h-32">
+              <option value="to do">To Do</option>
+              <option value="doing">Doing</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+
+          <button
+            (click)="saveTask(task)"
+            class="bg-teal-500 hover:bg-teal-700 text-white py-1 px-4 rounded ml-auto h-32"
+          >
+            Save
+          </button>
         </div>
 
         <ng-template #showTask>
-          {{ task.name }}
+          <span>{{ task.name }}</span>
+          <span class="ml-4 text-sm italic text-gray-500">{{ task.status | titlecase }}</span>
         </ng-template>
 
-        <div class="flex items-center justify-end">
-          <span (click)="removeTask(task)" style="cursor: pointer">
+        <div *ngIf="!task.isEditing" class="flex items-center justify-end">
+          <span (click)="removeTask(task)" style="cursor: pointer" class="ml-2">
             <svg
               class="h-8 w-8 text-red-500"
               fill="none"
@@ -37,7 +49,7 @@
             </svg>
           </span>
 
-          <span (click)="toggleCompleted(task)" style="cursor: pointer">
+          <span (click)="toggleCompleted(task)" style="cursor: pointer" class="ml-2">
             <svg
               class="h-8 w-8 text-green-500"
               fill="none"
@@ -53,7 +65,7 @@
             </svg>
           </span>
 
-          <span *ngIf="!task.isEditing" (click)="editTask(i)" style="cursor: pointer">
+          <span (click)="editTask(i)" style="cursor: pointer" class="ml-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="h-8 w-8 text-blue-500"
@@ -64,8 +76,8 @@
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <circle cx="12" cy="12" r="9" /> 
-              <path d="M15.75 9l-5.7 5.7c-.1.1-.23.23-.37.3l-2.5.8.8-2.5c.06-.14.18-.27.3-.37l5.7-5.7c.28-.28.73-.28 1 0l.77.77c.29.29.29.73 0 1z" /> <!-- Lápis dentro -->
+              <circle cx="12" cy="12" r="9" />
+              <path d="M15.75 9l-5.7 5.7c-.1.1-.23.23-.37.3l-2.5.8.8-2.5c.06-.14.18-.27.3-.37l5.7-5.7c.28-.28.73-.28 1 0l.77.77c.29.29.29.73 0 1z" />
             </svg>
           </span>
         </div>
