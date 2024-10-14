@@ -8,7 +8,7 @@ import (
 )
 
 type TaskService interface {
-	CreateTask(description string) (*models.Task, error)
+	CreateTask(description, status string) (*models.Task, error)
 	AcceptTask(id uint) error
 	UpdateTask(id uint, description, status string) error
 	DeleteTask(id uint) error
@@ -21,9 +21,10 @@ func NewTaskService() TaskService {
 	return &taskService{}
 }
 
-func (s *taskService) CreateTask(description string) (*models.Task, error) {
+func (s *taskService) CreateTask(description, status string) (*models.Task, error) {
 	task := models.Task{
 		Description: description,
+		Status:      status,
 	}
 
 	result := db.DB.Create(&task)
@@ -31,7 +32,7 @@ func (s *taskService) CreateTask(description string) (*models.Task, error) {
 		return nil, result.Error
 	}
 
-	log.Printf("Task criada: %v", task)
+	log.Printf("Created task: %v", task)
 	return &task, nil
 }
 

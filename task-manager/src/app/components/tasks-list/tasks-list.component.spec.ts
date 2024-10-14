@@ -20,9 +20,9 @@ describe('TasksListComponent', () => {
     component = fixture.componentInstance;
 
     component.tasks = [
-      { name: 'Task 1', status: 'to do', completed: false, isEditing: false },
-      { name: 'Task 2', status: 'to do', completed: false, isEditing: false },
-      { name: 'Task 3', status: 'to do', completed: false, isEditing: false }
+      { id: 1, name: 'Task 1', status: 'to do', completed: false, isEditing: false },
+      { id: 2, name: 'Task 2', status: 'to do', completed: false, isEditing: false },
+      { id: 3, name: 'Task 3', status: 'to do', completed: false, isEditing: false }
     ];
 
     fixture.detectChanges();

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"log"
 	"task-manager-api/db"
 	"task-manager-api/migrations"
@@ -22,6 +23,11 @@ func main() {
 	app := fiber.New(fiber.Config{
 		Immutable: true,
 	})
+
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "*",
+		AllowMethods: "GET,POST,HEAD,PUT,DELETE,PATCH,OPTIONS",
+	}))
 
 	config.LoadEnv()
 

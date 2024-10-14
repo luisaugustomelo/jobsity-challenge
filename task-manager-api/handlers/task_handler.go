@@ -18,13 +18,14 @@ func NewTaskHandler(taskService services.TaskService) *TaskHandler {
 func (h *TaskHandler) CreateTask(c *fiber.Ctx) error {
 	type Request struct {
 		Description string `json:"description"`
+		Status      string `json:"status"`
 	}
 	req := new(Request)
 	if err := c.BodyParser(req); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid input"})
 	}
 
-	task, err := h.taskService.CreateTask(req.Description)
+	task, err := h.taskService.CreateTask(req.Description, req.Status)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Could not create task"})
 	}
