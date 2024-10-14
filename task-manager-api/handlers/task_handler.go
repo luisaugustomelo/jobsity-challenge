@@ -33,14 +33,6 @@ func (h *TaskHandler) CreateTask(c *fiber.Ctx) error {
 	return c.JSON(task)
 }
 
-func (h *TaskHandler) AcceptTask(c *fiber.Ctx) error {
-	id, _ := c.ParamsInt("id")
-	if err := h.taskService.AcceptTask(uint(id)); err != nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
-	}
-	return c.SendStatus(fiber.StatusNoContent)
-}
-
 func (h *TaskHandler) UpdateTask(c *fiber.Ctx) error {
 	type Request struct {
 		Description string `json:"description"`
