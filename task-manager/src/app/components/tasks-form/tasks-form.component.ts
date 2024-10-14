@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Task } from '../../constants/tasks.interface';
 import { ApiService } from 'src/app/services/api-handler.service';
 
@@ -10,6 +10,8 @@ export class TasksFormComponent {
   newTaskId: 0;
   newTask: string = ''; 
   newTaskStatus: string = 'to do'; 
+
+  @Output() taskAdded = new EventEmitter<Task>();
 
   tasks: Task[] = []; 
 
@@ -24,7 +26,15 @@ export class TasksFormComponent {
         completed: false,
         isEditing: false,
       };
-      
+
+      this.apiService.getAllTasks().subscribe(
+        (response: Task[]) => {
+          this.tasks = response;
+        },
+        (error) => {
+          console.error('Error to load tasks:', error);
+        }
+      );
 
       this.apiService.addTask(task).subscribe(
         (addedTask: any) => {
@@ -35,8 +45,8 @@ export class TasksFormComponent {
             completed: addedTask.status === "completed" ? true : false,
             isEditing: false 
           }
-          console.log(task)
           this.tasks.push(task); 
+          this.taskAdded.emit(task);
         },
         (error) => console.error('Error to add task:', error)
       );

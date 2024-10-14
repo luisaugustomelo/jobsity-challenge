@@ -40,18 +40,7 @@ export class TasksListComponent implements OnInit {
     const task = this.tasks[index];
     task.isEditing = true;
   }
-
-  toggleCompleted(task: Task) {
-    console.log(task)
-    this.apiService.toggleCompleted(task.id).subscribe(
-      () => {
-        task.completed = !task.completed;
-        task.status = task.completed ? 'completed' : 'to do';
-      },
-      (error) => console.error('Error to update status:', error)
-    );
-  }
-
+  
   saveTask(task: Task) {
     this.apiService.saveTask(task.id, task.description, task.status).subscribe(
       () => {

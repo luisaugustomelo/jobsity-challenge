@@ -16,10 +16,6 @@ export class ApiService {
     return this.http.delete<void>(`${this.apiUrl}/${taskId}/delete`);
   }
 
-  toggleCompleted(taskId: number): Observable<void> {
-    return this.http.patch<void>(`${this.apiUrl}/${taskId}/accept`, {});
-  }
-
   saveTask(taskId: number, description: string, status: string): Observable<Task> {
     return this.http.patch<Task>(`${this.apiUrl}/${taskId}/update`, { description, status });
   }
