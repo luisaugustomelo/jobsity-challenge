@@ -40,6 +40,19 @@ func (h *TaskHandler) AcceptTask(c *fiber.Ctx) error {
 	return c.SendStatus(fiber.StatusOK)
 }
 
+func (h *TaskHandler) UpdateTask(c *fiber.Ctx) error {
+	id, err := c.ParamsInt("id")
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid input"})
+	}
+	description := c.Params("description")
+	status := c.Params("status")
+	if err := h.taskService.UpdateTask(uint(id), description, status); err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
+	}
+	return c.SendStatus(fiber.StatusOK)
+}
+
 func (h *TaskHandler) DeleteTask(c *fiber.Ctx) error {
 	id, _ := c.ParamsInt("id")
 	if err := h.taskService.DeleteTask(uint(id)); err != nil {

@@ -10,6 +10,7 @@ import (
 type TaskService interface {
 	CreateTask(description string) (*models.Task, error)
 	AcceptTask(id uint) error
+	UpdateTask(id uint, description, status string) error
 	DeleteTask(id uint) error
 	GetAllTasks() ([]models.Task, error)
 }
@@ -45,6 +46,21 @@ func (s *taskService) AcceptTask(id uint) error {
 	db.DB.Save(&task)
 
 	log.Printf("Task id %d accepted %v", id, task.Accept)
+	return nil
+}
+
+func (s *taskService) UpdateTask(id uint, description, status string) error {
+	var task models.Task
+	result := db.DB.First(&task, id)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	task.Description = description
+	task.Status = status
+	db.DB.Save(&task)
+
+	log.Printf("Task id %d updated %v", id, task.Description)
 	return nil
 }
 
