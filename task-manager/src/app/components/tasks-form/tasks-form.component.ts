@@ -19,22 +19,23 @@ export class TasksFormComponent {
     if (this.newTask.trim()) {
       const task: Task = {
         id: this.newTaskId,
-        name: this.newTask,
+        description: this.newTask,
         status: this.newTaskStatus,
         completed: false,
         isEditing: false,
       };
-      console.log(task)
+      
 
       this.apiService.addTask(task).subscribe(
         (addedTask: any) => {
           const task: Task = {
-            id: addedTask.ID,
-            name: addedTask.Description,
-            status: addedTask.Status, 
-            completed: false,
+            id: addedTask.id,
+            description: addedTask.description,
+            status: addedTask.status, 
+            completed: addedTask.status === "completed" ? true : false,
             isEditing: false 
           }
+          console.log(task)
           this.tasks.push(task); 
         },
         (error) => console.error('Error to add task:', error)

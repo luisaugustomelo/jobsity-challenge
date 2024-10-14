@@ -11,7 +11,16 @@ export class TasksListComponent implements OnInit {
 
   constructor(private apiService: ApiService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.apiService.getAllTasks().subscribe(
+      (response: Task[]) => {
+        this.tasks = response;
+      },
+      (error) => {
+        console.error('Error to load tasks:', error);
+      }
+    );
+  }
 
   removeTask(task: Task) {
     this.apiService.removeTask(task.id).subscribe(
@@ -33,6 +42,7 @@ export class TasksListComponent implements OnInit {
   }
 
   toggleCompleted(task: Task) {
+    console.log(task)
     this.apiService.toggleCompleted(task.id).subscribe(
       () => {
         task.completed = !task.completed;
@@ -43,12 +53,11 @@ export class TasksListComponent implements OnInit {
   }
 
   saveTask(task: Task) {
-    this.apiService.saveTask(task.id, task.name, task.status).subscribe(
-      (updatedTask: any) => {
-        console.log(updatedTask)
+    this.apiService.saveTask(task.id, task.description, task.status).subscribe(
+      () => {
         task.isEditing = false;
-        task.name = updatedTask.name;
-        task.status = updatedTask.status;
+        task.description = task.description;
+        task.status = task.status;
       },
       (error) => console.error('Error to save task:', error)
     );

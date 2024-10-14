@@ -13,21 +13,25 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   removeTask(taskId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${taskId}`);
+    return this.http.delete<void>(`${this.apiUrl}/${taskId}/delete`);
   }
 
   toggleCompleted(taskId: number): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/${taskId}/accept`, {});
+    return this.http.patch<void>(`${this.apiUrl}/${taskId}/accept`, {});
   }
 
   saveTask(taskId: number, description: string, status: string): Observable<Task> {
-    return this.http.put<Task>(`${this.apiUrl}/${taskId}`, { description, status });
+    return this.http.patch<Task>(`${this.apiUrl}/${taskId}/update`, { description, status });
   }
 
   addTask(task: Task): Observable<Task> {
     return this.http.post<Task>(`${this.apiUrl}/create`, {
-      description: task.name,
+      description: task.description,
       status: task.status
     });
+  }
+
+  getAllTasks(): Observable<Task[]> {
+    return this.http.get<Task[]>(`${this.apiUrl}/allTasks`);
   }
 }

@@ -38,20 +38,25 @@ func (h *TaskHandler) AcceptTask(c *fiber.Ctx) error {
 	if err := h.taskService.AcceptTask(uint(id)); err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
 	}
-	return c.SendStatus(fiber.StatusOK)
+	return c.SendStatus(fiber.StatusNoContent)
 }
 
 func (h *TaskHandler) UpdateTask(c *fiber.Ctx) error {
-	id, err := c.ParamsInt("id")
-	if err != nil {
+	type Request struct {
+		Description string `json:"description"`
+		Status      string `json:"status"`
+	}
+	req := new(Request)
+	if err := c.BodyParser(req); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid input"})
 	}
-	description := c.Params("description")
-	status := c.Params("status")
-	if err := h.taskService.UpdateTask(uint(id), description, status); err != nil {
+
+	id, _ := c.ParamsInt("id")
+
+	if err := h.taskService.UpdateTask(uint(id), req.Description, req.Status); err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
 	}
-	return c.SendStatus(fiber.StatusOK)
+	return c.SendStatus(fiber.StatusNoContent)
 }
 
 func (h *TaskHandler) DeleteTask(c *fiber.Ctx) error {

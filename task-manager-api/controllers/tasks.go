@@ -18,7 +18,7 @@ func SetupTaskRoutes(app *fiber.App) {
 
 func registerCreateTaskHandler(api fiber.Router, taskHandler *handlers.TaskHandler) {
 	api.Post("/create", taskHandler.CreateTask)
-	api.Patch("/:id/update", taskHandler.CreateTask)
+	api.Patch("/:id/update", taskHandler.UpdateTask)
 	api.Patch("/:id/accept", taskHandler.AcceptTask)
 	api.Delete("/:id/delete", taskHandler.DeleteTask)
 	api.Get("/allTasks", taskHandler.GetAllTasks)

@@ -32,7 +32,7 @@ describe('TasksFormComponent', () => {
     component.addTask();
     
     expect(component.tasks.length).toBe(1);
-    expect(component.tasks[0].name).toBe('New Task');
+    expect(component.tasks[0].description).toBe('New Task');
     expect(component.tasks[0].status).toBe('to do');
   });
 

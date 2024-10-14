@@ -6,11 +6,11 @@ import (
 )
 
 type Task struct {
-	ID          uint   `gorm:"primaryKey"`
-	Description string `gorm:"type:varchar(255);not null"`
-	Accept      bool   `gorm:"default:false"`
-	Status      string `gorm:"type:varchar(255);not null"`
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
-	DeletedAt   gorm.DeletedAt `gorm:"index"`
+	ID          uint           `gorm:"primaryKey" json:"id"`
+	Description string         `gorm:"type:varchar(255);not null" json:"description"`
+	Accept      bool           `gorm:"default:false" json:"accept"`
+	Status      string         `gorm:"type:varchar(255);not null" json:"status"`
+	CreatedAt   time.Time      `json:"createdAt"`
+	UpdatedAt   time.Time      `json:"updatedAt"`
+	DeletedAt   gorm.DeletedAt `gorm:"index" json:"deletedAt,omitempty"`
 }

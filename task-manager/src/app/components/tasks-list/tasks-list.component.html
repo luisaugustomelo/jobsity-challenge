@@ -8,7 +8,7 @@
         <div *ngIf="task.isEditing; else showTask" class="flex w-full items-center justify-between">
           <div class="flex items-center">
             <input
-              [(ngModel)]="task.name"
+              [(ngModel)]="task.description"
               class="rounded p-1 border-none w-[200px] mr-2"
               type="text"
             />
@@ -28,7 +28,7 @@
         </div>
 
         <ng-template #showTask>
-          <span>{{ task.name }}</span>
+          <span>{{ task.description }}</span>
           <span class="ml-4 text-sm italic text-gray-500">{{ task.status | titlecase }}</span>
         </ng-template>
 
