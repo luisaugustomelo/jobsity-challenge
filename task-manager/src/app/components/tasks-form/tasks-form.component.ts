@@ -16,7 +16,7 @@ export class TasksFormComponent {
 
   tasks: Task[] = []; 
 
-  constructor(private apiService: ApiService, private taskService: TaskService) {} 
+  constructor(private taskService: TaskService) {} 
 
   addTask() {
     if (this.newTask.trim()) {
