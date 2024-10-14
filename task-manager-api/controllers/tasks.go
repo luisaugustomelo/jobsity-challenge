@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"task-manager-api/db"
 	"task-manager-api/handlers"
 	"task-manager-api/services"
 )
@@ -10,7 +11,7 @@ func SetupTaskRoutes(app *fiber.App) {
 	api := app.Group("/task")
 
 	// Dependency Injection
-	taskService := services.NewTaskService()
+	taskService := services.NewTaskService(db.DB)
 	taskHandler := handlers.NewTaskHandler(taskService)
 
 	registerCreateTaskHandler(api, taskHandler)

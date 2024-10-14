@@ -2,10 +2,18 @@ package services
 
 import (
 	"errors"
+	"gorm.io/gorm"
 	"log"
-	"task-manager-api/db"
 	"task-manager-api/models"
 )
+
+type Database interface {
+	Create(value interface{}) *gorm.DB
+	First(dest interface{}, conds ...interface{}) (tx *gorm.DB)
+	Delete(value interface{}, conds ...interface{}) (tx *gorm.DB)
+	Find(dest interface{}, conds ...interface{}) (tx *gorm.DB)
+	Save(value interface{}) (tx *gorm.DB)
+}
 
 type TaskService interface {
 	CreateTask(description, status string) (*models.Task, error)
@@ -14,10 +22,14 @@ type TaskService interface {
 	GetAllTasks() ([]models.Task, error)
 }
 
-type taskService struct{}
+type taskService struct {
+	db Database
+}
 
-func NewTaskService() TaskService {
-	return &taskService{}
+func NewTaskService(db Database) TaskService {
+	return &taskService{
+		db: db,
+	}
 }
 
 func (s *taskService) CreateTask(description, status string) (*models.Task, error) {
@@ -26,7 +38,7 @@ func (s *taskService) CreateTask(description, status string) (*models.Task, erro
 		Status:      status,
 	}
 
-	result := db.DB.Create(&task)
+	result := s.db.Create(&task)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -37,21 +49,21 @@ func (s *taskService) CreateTask(description, status string) (*models.Task, erro
 
 func (s *taskService) UpdateTask(id uint, description, status string) error {
 	var task models.Task
-	result := db.DB.First(&task, id)
+	result := s.db.First(&task, id)
 	if result.Error != nil {
 		return result.Error
 	}
 
 	task.Description = description
 	task.Status = status
-	db.DB.Save(&task)
+	s.db.Save(&task)
 
 	log.Printf("Task id %d updated %v", id, task.Description)
 	return nil
 }
 
 func (s *taskService) DeleteTask(id uint) error {
-	result := db.DB.Delete(&models.Task{}, id)
+	result := s.db.Delete(&models.Task{}, id)
 	if result.Error != nil {
 		return result.Error
 	}
@@ -65,7 +77,7 @@ func (s *taskService) DeleteTask(id uint) error {
 
 func (s *taskService) GetAllTasks() ([]models.Task, error) {
 	var tasks []models.Task
-	result := db.DB.Find(&tasks)
+	result := s.db.Find(&tasks)
 	if result.Error != nil {
 		return nil, result.Error
 	}

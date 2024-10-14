@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ApiService } from '../../services/api-handler.service';
 import { Task } from '../../constants/tasks.interface';
+import { TaskService } from 'src/app/services/task-handler.service';
 
 @Component({
   selector: 'app-tasks-list',
@@ -9,17 +10,14 @@ import { Task } from '../../constants/tasks.interface';
 export class TasksListComponent implements OnInit {
   @Input() tasks: Task[] = [];
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private taskService: TaskService) {}
 
   ngOnInit(): void {
-    this.apiService.getAllTasks().subscribe(
-      (response: Task[]) => {
-        this.tasks = response;
-      },
-      (error) => {
-        console.error('Error to load tasks:', error);
-      }
-    );
+    this.taskService.tasks$.subscribe((tasks: Task[]) => {
+      this.tasks = tasks;
+    });
+
+    this.taskService.loadTasks();
   }
 
   removeTask(task: Task) {
